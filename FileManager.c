@@ -1,15 +1,18 @@
+/*************************
+* FILE INPUT AND OUTPUT
+* Handles reading simulator instructions from file and writing events to file.
+* Author: Jeff Dugmore
+* Date Created: 05/04/2020
+* Date Modified: 05/04/2020
+************************/
 #include "FileManager.h"
-#include <stdio.h>
 
-int main(int argc, char const *argv[]) //testing
+/******************
+* get_sim_input
+* Loads sim input file into a buffer.
+*****************/
+void get_sim_input(char* fileName)
 {
-    printf("Hello World!\n");
-    #ifdef DEBUG
-    printf("Youre in debug mode\n");
-    #endif
-    return 0;
-}
-
-void test(int i){
-    printf("%d", i);
+    //functions
+    
 }
