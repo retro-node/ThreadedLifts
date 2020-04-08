@@ -1,0 +1,8 @@
+TODOS:
+- Unit tests
+- Mutual exclusion on sim_out access
+- Lift mechanisms
+- Buffer
+- Buffer Mutual exclusion
+- Total number of reqs and movements
+- Kill zombies

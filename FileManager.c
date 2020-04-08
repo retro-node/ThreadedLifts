@@ -13,9 +13,12 @@
 * request
 * Loads sim input file into a buffer line by line.
 *****************/
-void request(char* filename)
+
+Instructions* request(int lineNo)
 {
+    char* filename = "sim_in";
     FILE* fp = NULL;
+    Instructions* out_instructions;
     fp = fopen(filename, "rb");
     if(fp == NULL)
     {
@@ -23,35 +26,73 @@ void request(char* filename)
     }
     else
     {
-        int line = 1, stop = 0, res;
-        
-        do
+        // static int lineNo = 0;
+        int source = 0, dest = 0;
+        int res;
+        out_instructions = (Instructions*)calloc(1, sizeof(Instructions));
+        for (int i = 0; i < lineNo; i++) // scan lineNo amount of lines first
         {
-            int source = 0, dest = 0;
-            res = fscanf(fp, "%d %d\n", &source, &dest);
-            if(res == EOF) stop = 1;
-            if(res != 2 && (source == 0 || dest == 0) && !stop)
+            res = fscanf(fp, "%d %d\n", &source, &dest); 
+        }
+        if(res != EOF)
+        {
+
+            if(res != 2 && ((source > 0 && source <= 20) || (dest > 0 && dest <= 20))) //determine basement and sublevels
             {
                 #ifdef DEBUG
                 printf("Source: %d | Destination: %d\n", source, dest);
                 #endif
                 printf("[WARNING] Invalid format in sim file. Line %d\n"
-                "Please ensure no floors are labeled \"0\".\nUse"
-                " -1 for basement and sublevels.\n", line);
+                "Please ensure no floors are between 1 and 20.\n", lineNo+1);
                 if(ferror(fp))
                 {
-                    perror("Error occured while attempting to read file");
+                    perror("Error occured while attempting to read file\n");
                 }
-                
             }
             else
             {
-                /* code */
+                out_instructions -> start = source;
+                out_instructions -> end = dest;
+                #ifdef DEBUG
+                printf("out_instructions -> start: %d \nout_instructions -> end: %d\n", source, dest);
+                #endif
             }
-            
-            line++;
-        } while(!stop);
+            lineNo++;
+        }
+        else{printf("No more lines to load...\n");}
+        
         fclose(fp);
     }
+    return out_instructions;
+}
+
+/******************
+ * write_request 
+ * Writes a request to file sim_out for logging.
+ * Requires: floor numbers as ints.
+ * Returns: request number to be discarded unless needed for total req count.
+ *****************/
+int write_request(int from, int to){ 
+    static int reqNo;
+    FILE* fp = fopen(FILE_OUT, "wb");
+    reqNo++;
+    if(fp != NULL)
+    {
+        fprintf(fp, 
+            "-------------------------------------------\n"
+            "  New Lift Request From Floor %d to Foor %d\n"
+            "  Request No: %d\n"    
+            "-------------------------------------------\n", from, to, reqNo);
+        if(ferror(fp))
+        {
+            perror("Error occured while attempting to write to file.\n");
+        }
+    }
+    else
+    {
+        printf("Something went wrong! Couldn't write request to file.\n");
+    }
     
+    fclose(fp);
+    return reqNo;
 }
