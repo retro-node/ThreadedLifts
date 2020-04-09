@@ -5,20 +5,19 @@
 * Date Created: 05/04/2020
 * Date Modified: 05/04/2020
 ************************/
+
 #include "FileManager.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 /******************
 * request
 * Loads sim input file into a buffer line by line.
 *****************/
-
-Instructions* request(int lineNo)
+Req* request(void)
 {
     char* filename = "sim_in";
     FILE* fp = NULL;
-    Instructions* out_instructions;
+    Req* out_request = NULL;
+    static int lineNo = 0;
     fp = fopen(filename, "rb");
     if(fp == NULL)
     {
@@ -26,11 +25,10 @@ Instructions* request(int lineNo)
     }
     else
     {
-        // static int lineNo = 0;
         int source = 0, dest = 0;
         int res;
-        out_instructions = (Instructions*)calloc(1, sizeof(Instructions));
-        for (int i = 0; i < lineNo; i++) // scan lineNo amount of lines first
+        out_request = (Req*)calloc(1, sizeof(Req));
+        for (int i = 0; i <= lineNo; i++) // scan lineNo amount of lines first
         {
             res = fscanf(fp, "%d %d\n", &source, &dest); 
         }
@@ -51,8 +49,8 @@ Instructions* request(int lineNo)
             }
             else
             {
-                out_instructions -> start = source;
-                out_instructions -> end = dest;
+                out_request -> source = source;
+                out_request -> dest = dest;
                 #ifdef DEBUG
                 printf("out_instructions -> start: %d \nout_instructions -> end: %d\n", source, dest);
                 #endif
@@ -63,26 +61,28 @@ Instructions* request(int lineNo)
         
         fclose(fp);
     }
-    return out_instructions;
+    return out_request;
 }
 
 /******************
  * write_request 
  * Writes a request to file sim_out for logging.
- * Requires: floor numbers as ints.
- * Returns: request number to be discarded unless needed for total req count.
+ * Requires: floor numbers as ints, atomic excecution.
+ * Returns: request number to be needed for total req count.
  *****************/
-int write_request(int from, int to){ 
+int write_request(Req* request) //TODO use Req struct?
+{ 
     static int reqNo;
-    FILE* fp = fopen(FILE_OUT, "wb");
+    FILE* fp = fopen(FILE_OUT, "ab");
     reqNo++;
+    request->req_no = reqNo;
     if(fp != NULL)
     {
         fprintf(fp, 
             "-------------------------------------------\n"
             "  New Lift Request From Floor %d to Foor %d\n"
             "  Request No: %d\n"    
-            "-------------------------------------------\n", from, to, reqNo);
+            "-------------------------------------------\n", request->source, request->dest, reqNo);
         if(ferror(fp))
         {
             perror("Error occured while attempting to write to file.\n");
@@ -95,4 +95,65 @@ int write_request(int from, int to){
     
     fclose(fp);
     return reqNo;
+}
+
+/******************
+ * write_completed 
+ * Writes a log of completed request to file sim_out.
+ * Requires: floor numbers, request number, atomic excecution.
+ * Returns: movement number to be needed for total move number.
+ *****************/
+int write_completed(lift_move* move, int reqNo)
+{ 
+    // int *origin, *source, *dest, *req_no;
+    static int total_move_no[3];
+    int lift_no = move->lift_no;
+    // move->lift_origin;
+    int* source = &move->request->source;
+    int* dest = &move->request->dest;
+    // move->request->req_no;
+    // move->num_moves;
+    if(move->num_moves == 0) // Calculate the number of moves
+    {
+        move->num_moves = abs(move->lift_origin - *source) + abs(*source - *dest);
+    }
+    total_move_no[lift_no] += move->num_moves; // add moves to total moves for this lift
+    FILE* fp = fopen(FILE_OUT, "ab");
+    if(fp != NULL)
+    {
+        fprintf(fp, 
+            "Lift-%d Operation\n"
+            "Previous position: Floor %d\n"
+            "Request: Floor %d to Floor %d\n"
+            "Detail operations:\n"
+            "    Go from Floor %d to Floor %d\n"
+            "    Go from Floor %d to Floor %d\n"
+            "    #movement for this request: %d\n"
+            "    #request: %d\n"
+            "    Total #movement: %d\n"
+            "Current position: Floor %d\n", 
+            move->lift_no,
+            move->lift_origin,
+            move->request->source, move->request->dest,
+            move->lift_origin, move->request->source,
+            move->request->source, move->request->dest,
+            move->num_moves,
+            move->request->req_no,
+            total_move_no[lift_no],
+            move->request->dest);
+        if(ferror(fp))
+        {
+            perror("Error occured while attempting to write successful action to file.\n");
+        }
+    }
+    else
+    {
+        printf("Something went wrong! Couldn't write successful action to file.\n");
+    }
+    
+    fclose(fp);
+    free(move->request);
+    free(move);
+ 
+    return total_move_no[lift_no];
 }

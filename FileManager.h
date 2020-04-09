@@ -1,11 +1,15 @@
 #ifndef FILEMANAGER_H
 #define FILEMANAGER_H
-typedef struct {
-    int start;
-    int end;
-} Instructions;
+#include <stdio.h>
+#include <stdlib.h>
+#include "Lifts.h"
+
 #define FILE_IN "sim_in"
 #define FILE_OUT "sim_out"
-Instructions* request(int);
-int write_request(int, int);
+
+
+Req* request(void);
+int write_request(Req*);
+int write_completed(lift_move*, int);
+
 #endif

@@ -1,6 +1,6 @@
 CFLAGS = -Wall -Wextra -std=c18
 CC = gcc
-OBJ = main.o FileManager.o Lift_R.o
+OBJ = main.o FileManager.o Lifts.o
 HDRS = main.h FileManager.h
 EXEC = ThreadedLifts
 
@@ -16,8 +16,8 @@ endif
 $(EXEC) : $(OBJ)
 	$(CC) $(OBJ) -o $(EXEC)
 
-Lift_R.o : Lift_R.c Lift_R.h
-	$(CC) $(CFLAGS) -g Lift_R.c -c
+Lifts.o : Lifts.c Lifts.h
+	$(CC) $(CFLAGS) -g Lifts.c -c
     
 FileManager.o : FileManager.c FileManager.h
 	$(CC) $(CFLAGS) -g FileManager.c -c
@@ -26,4 +26,4 @@ main.o : main.c $(HDRS)
 	$(CC) $(CFLAGS) -g main.c -c
     
 clean:
-	rm -f $(EXEC) $(OBJ)
+	rm -f $(EXEC) $(OBJ) sim_out

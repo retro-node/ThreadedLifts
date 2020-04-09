@@ -1,8 +1,14 @@
 TODOS:
 - Unit tests
-- Mutual exclusion on sim_out access
 - Lift mechanisms
+- Write successful move
+- Mutual exclusion on sim_out access
 - Buffer
-- Buffer Mutual exclusion
 - Total number of reqs and movements
 - Kill zombies
+
+THREADED
+- Buffer Mutual exclusion
+
+TASKED
+- Buffer shared memory

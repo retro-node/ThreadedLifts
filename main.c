@@ -1,6 +1,5 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdlib.h>
+
 int main(int argc, char *argv[])
 {
     #ifdef DEBUG
@@ -35,40 +34,70 @@ int main(int argc, char *argv[])
 
 #ifdef UNIT_TEST
 void unit_test_file_manager(void)
-{
-    printf("FILEMANAGER UNIT TEST:\n"
-    "1. request (sim_in)\n"
-    "2. write_request (sim_out)\n"
-    "Select: ");
-    int opt;
-    scanf("%d", &opt);
-    if(opt == 0 )
-    {
-        /* Nothing */
-    }
-    else if(opt == 1)
-    {
-        int n ;
-        printf("Line to read: ");
-        scanf("%d", &n);
-        Instructions* result = request(n);
-        printf("Line %d: %d %d\n", n, result->start, result->end);
-        free(result);
-    }
-    else if (opt == 2)
-    {
-        int start, end;
-        printf("Starting floor: ");
-        scanf("%d", &start);
-        printf("\nEnding floor: ");
-        scanf("%d", &end);
-        write_request(start, end);
-        printf("\nDone, check file. \n");
-    }
-    else
-    {
-        printf("test doesnt exist\n");
-    }
-    
+{        
+    int stop = 0;
+    do {
+        Req* req = NULL;
+        printf("FILEMANAGER UNIT TEST:\n"
+        "0. exit\n"
+        "1. request (sim_in)\n"
+        "2. write_request (sim_out)\n"
+        "3. write_completed (sim_out)\n"
+        "Select: ");
+        int opt = 0;
+        scanf("%d", &opt);
+        if(opt <= 0 )
+        {
+            stop = 1;
+        }
+        else if(opt == 1)
+        {
+            printf("Reading next line: ");
+            Req* result = request();
+            printf("Line:%d %d\n", result->source, result->dest);
+            free(result);
+        }
+        else if (opt == 2)
+        {
+            int start, end;
+            printf("Starting floor: ");
+            scanf("%d", &start);
+            printf("\nEnding floor: ");
+            scanf("%d", &end);
+            req = (Req*)calloc(1, sizeof(Req));
+            req->source = start;
+            req->dest = end;
+            write_request(req);
+            printf("\nDone, check file. \n");
+        }
+        else if(opt == 3)
+        {
+            int lift_no, origin, start, end;
+            if(req == NULL)
+            {
+                req = (Req*)calloc(1, sizeof(Req));
+                printf("Starting floor: ");
+                scanf("%d", &start);
+                printf("\nEnding floor: ");
+                scanf("%d", &end);
+                req->source = start;
+                req->dest = end;
+            }
+            lift_move* this_move = (lift_move*)calloc(1, sizeof(lift_move));
+            printf("Lift No: ");
+            scanf("%d", &lift_no);
+            printf("original floor: ");
+            scanf("%d", &origin);
+            this_move->lift_no = lift_no;
+            this_move->request = req;
+            this_move->lift_origin = origin;
+            int reqno = write_request(req);
+            write_completed(this_move, reqno);
+        }
+        else
+        {
+            printf("test doesnt exist\n");
+        }
+    } while(stop == 0);
 }
 #endif
