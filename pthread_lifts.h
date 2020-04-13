@@ -1,7 +1,8 @@
-#ifndef LIFTS_H
-#define LIFTS_H 
+#ifndef PTHREAD_LIFTS_H
+#define PTHREAD_LIFTS_H 
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 typedef struct Req {
     int source;
@@ -17,5 +18,6 @@ typedef struct lift_move {
 } lift_move; 
 
 void lift_r(void);
+void lift(int);
 #include "FileManager.h"
 #endif

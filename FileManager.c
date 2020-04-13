@@ -70,7 +70,7 @@ Req* request(void)
  * Requires: floor numbers as ints, atomic excecution.
  * Returns: request number to be needed for total req count.
  *****************/
-int write_request(Req* request) //TODO use Req struct?
+int write_request(Req* request)
 { 
     static int reqNo;
     FILE* fp = fopen(FILE_OUT, "ab");
@@ -103,16 +103,12 @@ int write_request(Req* request) //TODO use Req struct?
  * Requires: floor numbers, request number, atomic excecution.
  * Returns: movement number to be needed for total move number.
  *****************/
-int write_completed(lift_move* move, int reqNo)
+int write_completed(lift_move* move)
 { 
-    // int *origin, *source, *dest, *req_no;
     static int total_move_no[3];
     int lift_no = move->lift_no;
-    // move->lift_origin;
     int* source = &move->request->source;
     int* dest = &move->request->dest;
-    // move->request->req_no;
-    // move->num_moves;
     if(move->num_moves == 0) // Calculate the number of moves
     {
         move->num_moves = abs(move->lift_origin - *source) + abs(*source - *dest);

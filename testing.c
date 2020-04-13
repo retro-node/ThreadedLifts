@@ -1,12 +1,8 @@
-#include "main.h"
+#include "testing.h"
 
 int main(int argc, char *argv[])
 {
-    #ifdef DEBUG
-    printf("You're in debug mode\n");
-    #endif
-    #ifdef UNIT_TEST
-    printf("You're in unit test mode\n"
+    printf("UNIT TESTING\n"
     "1. FileManager\n"
     "Select a unit to test: ");
     int opt;
@@ -23,16 +19,10 @@ int main(int argc, char *argv[])
     {
         printf("test doesnt exist\n");
     }
-    
-    #endif
-
-
-    printf("Stopping Simulation...\n");
-    printf("Thank you for using ThreadedLifts\n");
+    printf("Stopping testing...\n");
     return 0;
 }
 
-#ifdef UNIT_TEST
 void unit_test_file_manager(void)
 {        
     int stop = 0;
@@ -69,6 +59,7 @@ void unit_test_file_manager(void)
             req->dest = end;
             write_request(req);
             printf("\nDone, check file. \n");
+            free(req);
         }
         else if(opt == 3)
         {
@@ -91,8 +82,8 @@ void unit_test_file_manager(void)
             this_move->lift_no = lift_no;
             this_move->request = req;
             this_move->lift_origin = origin;
-            int reqno = write_request(req);
-            write_completed(this_move, reqno);
+            this_move->request->req_no = write_request(req);
+            write_completed(this_move);
         }
         else
         {
@@ -100,4 +91,3 @@ void unit_test_file_manager(void)
         }
     } while(stop == 0);
 }
-#endif
