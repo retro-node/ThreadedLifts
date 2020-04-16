@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <unistd.h>
+#include "FileManager.h"
 
 typedef struct Req {
     int source;
@@ -13,11 +15,12 @@ typedef struct Req {
 typedef struct lift_move {
     int lift_no;
     int lift_origin;
-    Req* request;
+    struct Req* request;
     int num_moves;
 } lift_move; 
 
-void lift_r(void);
-void lift(int);
-#include "FileManager.h"
+#define NUM_THREADS 4 //total number of threads 3x lift & 1x lift_r
+void *lift_r(void*);
+void *lift(void*);
+
 #endif

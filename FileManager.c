@@ -12,7 +12,7 @@
 * request
 * Loads sim input file into a buffer line by line.
 *****************/
-Req* request(void)
+void* request(void)
 {
     char* filename = "sim_in";
     FILE* fp = NULL;
@@ -61,7 +61,7 @@ Req* request(void)
         
         fclose(fp);
     }
-    return out_request;
+    return (void*)out_request;
 }
 
 /******************
@@ -70,8 +70,9 @@ Req* request(void)
  * Requires: floor numbers as ints, atomic excecution.
  * Returns: request number to be needed for total req count.
  *****************/
-int write_request(Req* request)
+int write_request(void* req)
 { 
+    Req* request = (Req*)req;
     static int reqNo;
     FILE* fp = fopen(FILE_OUT, "ab");
     reqNo++;
@@ -103,8 +104,9 @@ int write_request(Req* request)
  * Requires: floor numbers, request number, atomic excecution.
  * Returns: movement number to be needed for total move number.
  *****************/
-int write_completed(lift_move* move)
+int write_completed(void* mv)
 { 
+    lift_move* move = (lift_move*)mv;
     static int total_move_no[3];
     int lift_no = move->lift_no;
     int* source = &move->request->source;

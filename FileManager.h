@@ -8,8 +8,8 @@
 #define FILE_OUT "sim_out"
 
 
-Req* request(void);
-int write_request(Req*);
-int write_completed(lift_move*);
+void* request(void);
+int write_request(void*);
+int write_completed(void*);
 
 #endif

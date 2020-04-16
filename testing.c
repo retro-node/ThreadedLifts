@@ -43,7 +43,7 @@ void unit_test_file_manager(void)
         else if(opt == 1)
         {
             printf("Reading next line: ");
-            Req* result = request();
+            Req* result = (Req*)request();
             printf("Line:%d %d\n", result->source, result->dest);
             free(result);
         }
