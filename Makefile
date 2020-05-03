@@ -5,7 +5,7 @@ EXECS = lift_sim_A tests #lift_sim_B
 
 ifdef DEBUG
 CFLAGS += -DDEBUG
-SECRET : clean $(EXEC)
+SECRET : clean $(EXECS)
 endif
 
 # ifdef UNIT_TEST
@@ -18,11 +18,14 @@ all : $(EXECS)
 tests : testing.o FileManager.o
 	$(CC) testing.o FileManager.o -o tests
 
-lift_sim_A : pthread_lifts.o FileManager.o
-	$(CC) pthread_lifts.o FileManager.o -o lift_sim_A -lpthread
+lift_sim_A : pthread_lifts.o FileManager.o queue.o
+	$(CC) pthread_lifts.o FileManager.o queue.o -o lift_sim_A -lpthread
 
-pthread_lifts.o : pthread_lifts.c FileManager.h pthread_lifts.h
+pthread_lifts.o : pthread_lifts.c FileManager.h pthread_lifts.h queue.h
 	$(CC) $(CFLAGS) -g pthread_lifts.c -c
+
+queue.o : queue.c queue.h pthread_lifts.h
+	$(CC) $(CFLAGS) -g queue.c -c
 
 # lift_sim_B : forked_lifts.o
 # 	$(CC) forked_lifts.o -o lift_sim_B

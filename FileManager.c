@@ -52,14 +52,19 @@ void* request(void)
                 out_request -> source = source;
                 out_request -> dest = dest;
                 #ifdef DEBUG
-                printf("out_instructions -> start: %d \nout_instructions -> end: %d\n", source, dest);
+                printf("[INFO] Processing instructions: floor %d --> floor %d\n", source, dest);
                 #endif
             }
             lineNo++;
         }
-        else{printf("No more lines to load...\n");}
+        else
+        {
+            printf("No more lines to load...\n");
+            out_request = NULL;
+        }
         
         fclose(fp);
+
     }
     return (void*)out_request;
 }
@@ -99,21 +104,31 @@ int write_request(void* req)
 }
 
 /******************
- * write_completed 
+ * write_completed
  * Writes a log of completed request to file sim_out.
  * Requires: floor numbers, request number, atomic excecution.
  * Returns: movement number to be needed for total move number.
  *****************/
 int write_completed(void* mv)
 { 
-    lift_move* move = (lift_move*)mv;
+    lift_move * move = (lift_move*)calloc(1, sizeof(lift_move));
+    *move = *(lift_move*)mv;
+    free(mv);
     static int total_move_no[3];
     int lift_no = move->lift_no;
-    int* source = &move->request->source;
-    int* dest = &move->request->dest;
+    int source = move->request->source;
+    int dest = move->request->dest;
     if(move->num_moves == 0) // Calculate the number of moves
     {
-        move->num_moves = abs(move->lift_origin - *source) + abs(*source - *dest);
+        if(!(source == 0 || dest == 0)){
+            move->num_moves = abs(move->lift_origin - source) + abs(source - dest);
+        }
+        #ifdef DEBUG
+        else
+        {
+            printf("[ERROR] Request did not contain either source or destination");
+        }
+        #endif
     }
     total_move_no[lift_no] += move->num_moves; // add moves to total moves for this lift
     FILE* fp = fopen(FILE_OUT, "ab");

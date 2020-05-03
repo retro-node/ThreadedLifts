@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include "FileManager.h"
+#include "queue.h"
 
 typedef struct Req {
     int source;
