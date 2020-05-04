@@ -1,12 +1,18 @@
 #include "queue.h"
-struct Req* buffer = NULL;
+
+int buf_size;
+static int front;
+static int back;
+struct Req** buffer = NULL;
+
 // Initialise a buffer of requests to a certain size s
-Req* init(int s)
+Req** init(int s)
 {
     if(buffer == NULL)
     {
-        buffer = (Req*)calloc(s, sizeof(Req));
-        place = 0;
+        buffer = (Req**)calloc(s, sizeof(Req*));
+        front = 0;
+        back = 0;
     }
     else
     {
@@ -18,46 +24,65 @@ Req* init(int s)
     
 }
 /* add
-* Add a request to the buffer, and increment the place value
+* Add a request to the buffer, and increment the back value
 */
 void add(Req* new_req)
 {
-    if(place == buf_size-1)// || buffer[buf_size-1] != NULL)
+    if(!isFull())
     {
-        #ifdef DEBUG
-        printf("[ERROR] Buffer is full!\n");
-        #endif
+        buffer[back] = new_req;
+        back++;
     }
     else
     {
-        buffer[place] = *new_req;
-        place++;
+        #ifdef DEBUG
+        printf("[ERROR] Buffer is full, cannot add.");
+        #endif
     }
+    
 }
 
 /* get
 * returns a request to the caller, and sets the request to NULL in the buffer
-* moves the place to new actual length of queue
+* moves the front to incremented 1 place.
 */
 Req* get(void)
 {
-    Req* out;
-    if(place == 0)
+    balance();
+    Req* out = buffer[front];
+    buffer[front] = NULL;
+    if( front != back ) // avoid false isFull
     {
-        out = &buffer[0];
-        #ifdef DEBUG
-        printf("[ERROR] Buffer is empty\n");
-        #endif
-    }
-    else 
-    {
-        out = &buffer[place];
-        // buffer[place] = NULL;
-        place--;
+        front++;
     }
     return out;
 }
+
 int isFull(void)
 {
-    return place == buf_size-1;
+    balance();
+    int res = 0;
+    if (front != 0)
+    {
+        res = (back % front) == back;
+    }
+    else // avoid div by 0
+    {
+        res = back == buf_size-1;
+    }
+    
+
+    return res; //will always result as 1 for full queue
+}
+
+int isEmpty(void)
+{
+    return front == back && buffer[front] == NULL;
+}
+
+// method to enforce wrapped around front and back values
+void balance()
+{
+    if (front >= buf_size) front = front % (buf_size-1); // keep within buffer range
+    if (back >= buf_size) back = back % (buf_size-1);
 }

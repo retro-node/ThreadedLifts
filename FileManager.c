@@ -52,7 +52,7 @@ void* request(void)
                 out_request -> source = source;
                 out_request -> dest = dest;
                 #ifdef DEBUG
-                printf("[INFO] Processing instructions: floor %d --> floor %d\n", source, dest);
+                printf("[INFO] Loading instructions: floor %d --> floor %d\n", source, dest);
                 #endif
             }
             lineNo++;
@@ -126,7 +126,7 @@ int write_completed(void* mv)
         #ifdef DEBUG
         else
         {
-            printf("[ERROR] Request did not contain either source or destination");
+            printf("[ERROR] Request did not contain either source or destination\n");
         }
         #endif
     }
@@ -135,6 +135,7 @@ int write_completed(void* mv)
     if(fp != NULL)
     {
         fprintf(fp, 
+            "-------------------------------------------\n"
             "Lift-%d Operation\n"
             "Previous position: Floor %d\n"
             "Request: Floor %d to Floor %d\n"
@@ -144,7 +145,8 @@ int write_completed(void* mv)
             "    #movement for this request: %d\n"
             "    #request: %d\n"
             "    Total #movement: %d\n"
-            "Current position: Floor %d\n", 
+            "Current position: Floor %d\n"
+           "-------------------------------------------\n",
             move->lift_no,
             move->lift_origin,
             move->request->source, move->request->dest,

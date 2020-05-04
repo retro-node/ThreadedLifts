@@ -2,13 +2,11 @@
 #define QUEUE_H
 #include "pthread_lifts.h"
 
-
-int buf_size;
-static int place;
-
-struct Req* init(int);
+struct Req** init(int);
 void add(struct Req*);
 struct Req* get(void);
 int isFull(void);
+int isEmpty(void);
+void balance(void);
 
 #endif

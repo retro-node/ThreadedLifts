@@ -1,6 +1,6 @@
 CFLAGS = -Wall -Wextra -std=c18 
 CC = gcc
-OBJ = FileManager.o pthread_lifts.o testing.o #forked_lifts.o
+OBJ = FileManager.o pthread_lifts.o testing.o queue.o #forked_lifts.o
 EXECS = lift_sim_A tests #lift_sim_B
 
 ifdef DEBUG
