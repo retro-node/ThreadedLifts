@@ -7,7 +7,9 @@
 ************************/
 
 #include "FileManager.h"
-
+static int total_move_no[3];
+static int reqNo;
+static int lineNo = 0;
 /******************
 * request
 * Loads sim input file into a buffer line by line.
@@ -17,7 +19,6 @@ void* request(void)
     char* filename = "sim_in";
     FILE* fp = NULL;
     Req* out_request = NULL;
-    static int lineNo = 0;
     fp = fopen(filename, "rb");
     if(fp == NULL)
     {
@@ -78,7 +79,7 @@ void* request(void)
 int write_request(void* req)
 { 
     Req* request = (Req*)req;
-    static int reqNo;
+
     FILE* fp = fopen(FILE_OUT, "ab");
     reqNo++;
     request->req_no = reqNo;
@@ -114,7 +115,7 @@ int write_completed(void* mv)
     lift_move * move = (lift_move*)calloc(1, sizeof(lift_move));
     *move = *(lift_move*)mv;
     free(mv);
-    static int total_move_no[3];
+    
     int lift_no = move->lift_no;
     int source = move->request->source;
     int dest = move->request->dest;

@@ -8,6 +8,11 @@ CFLAGS += -DDEBUG
 SECRET : clean $(EXECS)
 endif
 
+ifdef QUEUEV
+CFLAGS += -DQUEUEV
+SECRET : clean $(EXECS)
+endif
+
 # ifdef UNIT_TEST
 # CFLAGS += -DUNIT_TEST
 # SECRET : clean $(EXEC)

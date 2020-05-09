@@ -7,6 +7,5 @@ void add(struct Req*);
 struct Req* get(void);
 int isFull(void);
 int isEmpty(void);
-void balance(void);
 
 #endif

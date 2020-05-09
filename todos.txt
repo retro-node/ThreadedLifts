@@ -1,11 +1,8 @@
 TODOS:
-- Lift mechanisms
-- Mutual exclusion on sim_out access
+
 - Total number of reqs and movements
 - Kill zombies
-
-THREADED
-- Buffer Mutual exclusion
+- Peristent data on lifts and output (static variables)
 
 TASKED
 - Buffer shared memory
