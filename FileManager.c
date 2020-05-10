@@ -36,25 +36,26 @@ void* request(void)
         if(res != EOF)
         {
 
-            if(res != 2 && ((source > 0 && source <= 20) || (dest > 0 && dest <= 20))) //determine basement and sublevels
-            {
-                #ifdef DEBUG
-                printf("Source: %d | Destination: %d\n", source, dest);
-                #endif
-                printf("[WARNING] Invalid format in sim file. Line %d\n"
-                "Please ensure no floors are between 1 and 20.\n", lineNo+1);
-                if(ferror(fp))
-                {
-                    perror("Error occured while attempting to read file\n");
-                }
-            }
-            else
+            if(res == 2 && ((source > 0 && source <= 20) && (dest > 0 && dest <= 20))) // atoi avoid chars
             {
                 out_request -> source = source;
                 out_request -> dest = dest;
                 #ifdef DEBUG
                 printf("[INFO] Loading instructions: floor %d --> floor %d\n", source, dest);
                 #endif
+            }
+            else
+            {
+                #ifdef DEBUG
+                printf("Source: %d | Destination: %d\n", source, dest);
+                #endif
+                printf("[WARNING] Invalid format in sim file. Line %d\n"
+                "Please ensure floors are between 1 and 20.\n", lineNo+1);
+                if(ferror(fp))
+                {
+                    perror("Error occured while attempting to read file\n");
+                }
+                out_request = NULL;
             }
             lineNo++;
         }
@@ -78,28 +79,28 @@ void* request(void)
  *****************/
 int write_request(void* req)
 { 
-    Req* request = (Req*)req;
-
+    Req** request = (Req**)&req;
+    
     FILE* fp = fopen(FILE_OUT, "ab");
     reqNo++;
-    request->req_no = reqNo;
+    (**request).req_no = reqNo;
     if(fp != NULL)
     {
         fprintf(fp, 
             "-------------------------------------------\n"
             "  New Lift Request From Floor %d to Foor %d\n"
             "  Request No: %d\n"    
-            "-------------------------------------------\n", request->source, request->dest, reqNo);
+            "-------------------------------------------\n", (**request).source, (**request).dest, reqNo);
         if(ferror(fp))
         {
-            perror("Error occured while attempting to write to file.\n");
+            perror("Error occured while attempting to write request to file.\n");
         }
     }
-    else
+    else printf("Something went wrong! Couldn't write request to file.\n");
+    if(ferror(fp))
     {
-        printf("Something went wrong! Couldn't write request to file.\n");
+        perror("Error occured while attempting to write request to file.\n");
     }
-    
     fclose(fp);
     return reqNo;
 }

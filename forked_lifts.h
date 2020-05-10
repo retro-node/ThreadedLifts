@@ -1,12 +1,11 @@
-#ifndef PTHREAD_LIFTS_H
-#define PTHREAD_LIFTS_H 
-#include <stdio.h>
+#ifndef FORKED_LIFTS_H
+#define FORKED_LIFTS_H 
+#include <semaphore.h>
 #include <stdlib.h>
-#include <pthread.h>
-#include <unistd.h>
+#include <stdio.h>
 #include "FileManager.h"
 #include "queue.h"
-#ifndef FORKED_LIFTS_H
+#ifndef PTHREADED_LIFTS_H
 typedef struct Req {
     int source;
     int dest;

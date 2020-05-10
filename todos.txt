@@ -3,6 +3,7 @@ TODOS:
 - Total number of reqs and movements
 - Kill zombies
 - Peristent data on lifts and output (static variables)
+- req no
 
-TASKED
+FORKED
 - Buffer shared memory

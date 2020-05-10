@@ -29,7 +29,7 @@ Req** init(int s)
 */
 void add(Req* new_req)
 {
-    if(!isFull() && new_req != NULL)
+    if(!isFull(BALANCE) && new_req != NULL)
     {
         buffer[back] = new_req;
         back++;
@@ -53,7 +53,7 @@ void add(Req* new_req)
 Req* get(void)
 {
     Req* out = NULL;
-    if (!isEmpty())
+    if (!isEmpty(BALANCE))
     {
         out = buffer[front];
         buffer[front] = NULL;
@@ -63,27 +63,33 @@ Req* get(void)
     return out;
 }
 
-int isFull(void)
+int isFull(int balance)
 {
-    if (front >= buf_size) front = (front % (buf_size-1)) ; //avoid func overhead for use in while loop
-    if (back-1 >= buf_size) back = (back % (buf_size-1)) ;
+    if (balance)
+    {
+        if (front >= buf_size) front = (front % (buf_size-1)) ; //avoid func overhead for use in while loop
+        if (back >= buf_size) back = (back % (buf_size));
+    }
     int res = 0;
     if (front != 0)
     {
-        res = (back % front) == back;
+        res = (back % front) == back && buffer[back] != NULL;
     }
     else // avoid div by 0
     {
-        res = back == buf_size; // wrap around consideration
+        res = back == buf_size && buffer[back] != NULL; // wrap around consideration
     }
     
     return res; //will always result as 1 for full queue
 }
 
-int isEmpty(void)
+int isEmpty(int balance)
 {
-    if (front >= buf_size) front = (front % (buf_size-1)) ; // keep within buffer range
-    if (back >= buf_size) back = (back % (buf_size-1)) ;
+    if (balance)
+    {
+        if (front >= buf_size) front = (front % (buf_size-1)) ; //avoid func overhead for use in while loop
+        if (back >= buf_size) back = (back % (buf_size));
+    }
     return front == back && buffer[front] == NULL;
 }
 
