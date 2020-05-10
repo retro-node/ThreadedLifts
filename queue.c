@@ -92,6 +92,3 @@ int isEmpty(int balance)
     }
     return front == back && buffer[front] == NULL;
 }
-
-
-// TODO destroy func

@@ -17,14 +17,10 @@ struct lift_params { // used only to allow multi param pthread create
     int lift_no;
     int lift_time;
 };
-int finished = 0;
-// size_t m = 0;
+int running = 1;
 const int* LIFT_TIME;
 int cond_ret;
 static int lift_origin[3] = {1,1,1}; // determine how to make static
-// lift_origin[0] = 1;
-// lift_origin[1] = 1;
-// lift_origin[2] = 1;
 Req** req_buffer;
 /******************
 * lift_r
@@ -47,36 +43,39 @@ void *lift_r(void* number)
     pthread_mutex_unlock(&buffer_lock);
     do
     {
-        pthread_mutex_lock(&buffer_lock);
-        while(isFull(BALANCE))
+        if(!isFull(NO_BALANCE)) // release mutex when full
         {
-            pthread_cond_wait(&cond, &buffer_lock);
-        }
-        // queue manipulation requires mutex
-        add(req);
-        req = (Req*)request();
-        pthread_mutex_lock(&fileio_lock);
-        if (req != NULL) write_request(req);
-        pthread_mutex_unlock(&fileio_lock);   
-        #ifdef QUEUEV
-        pthread_mutex_lock(&fileio_lock);
-        if (req_buffer[0]) printf("| %d : %d |", 0, req_buffer[0]->req_no);
-        else printf("| 0 : EMPTY |");
-        for(int i = 1; i < (int)m; i++)
-        {
-            if(req_buffer[i])
+            pthread_mutex_lock(&buffer_lock);
+            while(isFull(BALANCE))
             {
-                printf(" %d : %d |", i, req_buffer[i]->req_no);
-            }else{
-                printf(" %d : %s |", i, "EMPTY");
+                pthread_cond_wait(&cond, &buffer_lock);
             }
+            // queue manipulation requires mutex
+            add(req);
+            req = (Req*)request();
+            pthread_mutex_lock(&fileio_lock);
+            if (req != NULL) write_request(req);
+            pthread_mutex_unlock(&fileio_lock);   
+            #ifdef QUEUEV
+            pthread_mutex_lock(&fileio_lock);
+            if (req_buffer[0]) printf("| %d : %d |", 0, req_buffer[0]->req_no);
+            else printf("| 0 : EMPTY |");
+            for(int i = 1; i < (int)m; i++)
+            {
+                if(req_buffer[i])
+                {
+                    printf(" %d : %d |", i, req_buffer[i]->req_no);
+                }else{
+                    printf(" %d : %s |", i, "EMPTY");
+                }
+            }
+            printf("\n");
+            pthread_mutex_unlock(&fileio_lock);
+            #endif
+            pthread_mutex_unlock(&buffer_lock);
         }
-        printf("\n");
-        pthread_mutex_unlock(&fileio_lock);
-        #endif
-        pthread_mutex_unlock(&buffer_lock);
-
     }while(req != NULL);
+    running = 0;
     return NULL;
 }
 
@@ -99,7 +98,7 @@ void *lift(void* args)
     printf("[DEBUG] This is lift %d responding with %d lift time\n", this_lift_no, params.lift_time);
     pthread_mutex_unlock(&fileio_lock);
     #endif
-    while(!isEmpty(NO_BALANCE))
+    while(!isEmpty(NO_BALANCE) || running)
     {
         lift_move* movement = (lift_move*)calloc(1, sizeof(lift_move));
         movement-> lift_no = this_lift_no;
@@ -108,19 +107,23 @@ void *lift(void* args)
         Req* new_req = get();
         pthread_cond_signal(&cond);
         pthread_mutex_unlock(&buffer_lock);
-        #ifdef DEBUG
-        pthread_mutex_lock(&fileio_lock);
-        printf("[DEBUG] Lift %d going from %d to %d\n", this_lift_no, new_req->source, new_req->dest);
-        pthread_mutex_unlock(&fileio_lock);
-        #endif
-        movement-> request = new_req;
-        movement-> num_moves = 0;
-        int destination = movement->request->dest;
-        sleep(params.lift_time);
-        pthread_mutex_lock(&fileio_lock);
-        write_completed(movement); // will free movement and movement->request
-        pthread_mutex_unlock(&fileio_lock);
-        lift_origin[this_lift_no-1] = destination;
+        if (new_req != NULL)
+        {
+            #ifdef DEBUG
+            pthread_mutex_lock(&fileio_lock);
+            printf("[DEBUG] Lift %d going from %d to %d\n", this_lift_no, new_req->source, new_req->dest);
+            pthread_mutex_unlock(&fileio_lock);
+            #endif
+            movement-> request = new_req;
+            movement-> num_moves = 0;
+            int destination = movement->request->dest;
+            sleep(params.lift_time);
+            pthread_mutex_lock(&fileio_lock);
+            write_completed(movement); // will free movement and movement->request
+            pthread_mutex_unlock(&fileio_lock);
+            lift_origin[this_lift_no-1] = destination;
+        }
+        else printf("[ERROR] Tried to process invalid request .");
         #ifdef DEBUG
         pthread_mutex_lock(&fileio_lock);
         printf("[DEBUG] Lift %d is now at %d\n", this_lift_no, lift_origin[this_lift_no-1]);
@@ -143,7 +146,7 @@ int main(int argc, char const *argv[])
         int m = atoi(argv[1]);
         const int t = atoi(argv[2]);
         LIFT_TIME=&t;
-        if (t >= 0 && m >=0 )
+        if (t >= 0 && m >0 )
         {
 
             printf("[INFO] Initializing simulation using buffer size %d elements and lift time of %d seconds\n", m, t);
