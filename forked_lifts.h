@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <semaphore.h>
 
-#include "FileManager.h"
+#include "FileManagerForked.h"
 #include "queue.h"
 
 #ifndef PTHREADED_LIFTS_H

@@ -25,14 +25,17 @@ lift_sim_A : pthread_lifts.o FileManager.o queue.o
 pthread_lifts.o : pthread_lifts.c FileManager.h pthread_lifts.h queue.h
 	$(CC) $(CFLAGS) -g pthread_lifts.c -c
 
-lift_sim_B : forked_lifts.o FileManager.o queue.o 
-	$(CC) forked_lifts.o FileManager.o queue.o -o lift_sim_B $(THDFLAGS)
+lift_sim_B : forked_lifts.o FileManagerForked.o queue.o 
+	$(CC) forked_lifts.o FileManagerForked.o queue.o -o lift_sim_B $(THDFLAGS)
 
-forked_lifts.o : forked_lifts.c forked_lifts.h FileManager.h queue.h
+forked_lifts.o : forked_lifts.c forked_lifts.h FileManagerForked.h queue.h
 	$(CC) $(CFLAGS) -g forked_lifts.c -c
 
 queue.o : queue.c queue.h pthread_lifts.h
 	$(CC) $(CFLAGS) -g queue.c -c
+
+FileManagerForked.o : FileManagerForked.c FileManagerForked.h forked_lifts.h
+	$(CC) $(CFLAGS) -g FileManagerForked.c -c
 
 FileManager.o : FileManager.c FileManager.h pthread_lifts.h
 	$(CC) $(CFLAGS) -g FileManager.c -c
