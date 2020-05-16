@@ -20,7 +20,7 @@ struct lift_params { // used only to allow multi param pthread create
 int running = 1;
 const int* LIFT_TIME;
 int cond_ret;
-static int lift_origin[3] = {1,1,1}; // determine how to make static
+static int lift_origin[3] = {1,1,1}; 
 Req** req_buffer;
 /******************
 * lift_r
@@ -98,38 +98,41 @@ void *lift(void* args)
     printf("[DEBUG] This is lift %d responding with %d lift time\n", this_lift_no, params.lift_time);
     pthread_mutex_unlock(&fileio_lock);
     #endif
-    while(!isEmpty(NO_BALANCE) || running)
+    while(running)
     {
-        lift_move* movement = (lift_move*)calloc(1, sizeof(lift_move));
-        movement-> lift_no = this_lift_no;
-        movement-> lift_origin = lift_origin[this_lift_no-1];
-        pthread_mutex_lock(&buffer_lock);
-        Req* new_req = get();
-        pthread_cond_signal(&cond);
-        pthread_mutex_unlock(&buffer_lock);
-        if (new_req != NULL)
-        {
+        while(!isEmpty(NO_BALANCE)){
+            lift_move* movement = (lift_move*)calloc(1, sizeof(lift_move));
+            movement-> lift_no = this_lift_no;
+            movement-> lift_origin = lift_origin[this_lift_no-1];
+            pthread_mutex_lock(&buffer_lock);
+            Req* new_req = get();
+            pthread_cond_signal(&cond);
+            
+            if (new_req != NULL)
+            {
+                #ifdef DEBUG
+                pthread_mutex_lock(&fileio_lock);
+                printf("[DEBUG] Lift %d going from %d to %d\n", this_lift_no, new_req->source, new_req->dest);
+                pthread_mutex_unlock(&fileio_lock);
+                #endif
+                movement-> request = new_req;
+                movement-> num_moves = 0;
+                int destination = movement->request->dest;
+                sleep(params.lift_time);
+                pthread_mutex_lock(&fileio_lock);
+                write_completed(movement); // will free movement and movement->request
+                pthread_mutex_unlock(&fileio_lock);
+                lift_origin[this_lift_no-1] = destination;
+            }
+            else printf("[ERROR] Tried to process invalid request.\n");
             #ifdef DEBUG
             pthread_mutex_lock(&fileio_lock);
-            printf("[DEBUG] Lift %d going from %d to %d\n", this_lift_no, new_req->source, new_req->dest);
+            printf("[DEBUG] Lift %d is now at %d\n", this_lift_no, lift_origin[this_lift_no-1]);
+            printf("[DEBUG] This is lift %d completing\n", this_lift_no);
             pthread_mutex_unlock(&fileio_lock);
             #endif
-            movement-> request = new_req;
-            movement-> num_moves = 0;
-            int destination = movement->request->dest;
-            sleep(params.lift_time);
-            pthread_mutex_lock(&fileio_lock);
-            write_completed(movement); // will free movement and movement->request
-            pthread_mutex_unlock(&fileio_lock);
-            lift_origin[this_lift_no-1] = destination;
+            pthread_mutex_unlock(&buffer_lock);
         }
-        else printf("[ERROR] Tried to process invalid request .");
-        #ifdef DEBUG
-        pthread_mutex_lock(&fileio_lock);
-        printf("[DEBUG] Lift %d is now at %d\n", this_lift_no, lift_origin[this_lift_no-1]);
-        printf("[DEBUG] This is lift %d completing\n", this_lift_no);
-        pthread_mutex_unlock(&fileio_lock);
-        #endif
     }
     return NULL;
 }

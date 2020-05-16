@@ -1,0 +1,436 @@
+-------------------------------------------
+  New Lift Request From Floor 1 to Foor 5
+  Request No: 1
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 7 to Foor 2
+  Request No: 2
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 3 to Foor 8
+  Request No: 3
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 4 to Foor 11
+  Request No: 4
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 12 to Foor 19
+  Request No: 5
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 20 to Foor 7
+  Request No: 6
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 15 to Foor 2
+  Request No: 7
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 1 to Foor 5
+  Request No: 8
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 6 to Foor 10
+  Request No: 9
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 9 to Foor 19
+  Request No: 10
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 2 to Foor 5
+  Request No: 11
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 6 to Foor 10
+  Request No: 12
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 12 to Foor 20
+  Request No: 13
+-------------------------------------------
+-------------------------------------------
+Lift-2 Operation
+Previous position: Floor 1
+Request: Floor 1 to Floor 5
+Detail operations:
+    Go from Floor 1 to Floor 1
+    Go from Floor 1 to Floor 5
+    #movement for this request: 4
+    #request: 1
+    Total #movement: 4
+Current position: Floor 5
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 1 to Foor 5
+  Request No: 1
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 7 to Foor 2
+  Request No: 2
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 3 to Foor 8
+  Request No: 3
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 4 to Foor 11
+  Request No: 4
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 12 to Foor 19
+  Request No: 5
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 20 to Foor 7
+  Request No: 6
+-------------------------------------------
+-------------------------------------------
+Lift-1 Operation
+Previous position: Floor 1
+Request: Floor 1 to Floor 5
+Detail operations:
+    Go from Floor 1 to Floor 1
+    Go from Floor 1 to Floor 5
+    #movement for this request: 4
+    #request: 1
+    Total #movement: 4
+Current position: Floor 5
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 15 to Foor 2
+  Request No: 7
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 1 to Foor 5
+  Request No: 8
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 6 to Foor 10
+  Request No: 9
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 9 to Foor 19
+  Request No: 10
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 2 to Foor 5
+  Request No: 11
+-------------------------------------------
+-------------------------------------------
+Lift-1 Operation
+Previous position: Floor 5
+Request: Floor 20 to Floor 7
+Detail operations:
+    Go from Floor 5 to Floor 20
+    Go from Floor 20 to Floor 7
+    #movement for this request: 28
+    #request: 6
+    Total #movement: 32
+Current position: Floor 7
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 6 to Foor 10
+  Request No: 12
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 12 to Foor 20
+  Request No: 13
+-------------------------------------------
+-------------------------------------------
+Lift-1 Operation
+Previous position: Floor 7
+Request: Floor 2 to Floor 5
+Detail operations:
+    Go from Floor 7 to Floor 2
+    Go from Floor 2 to Floor 5
+    #movement for this request: 8
+    #request: 11
+    Total #movement: 40
+Current position: Floor 5
+-------------------------------------------
+-------------------------------------------
+Lift-1 Operation
+Previous position: Floor 5
+Request: Floor 6 to Floor 10
+Detail operations:
+    Go from Floor 5 to Floor 6
+    Go from Floor 6 to Floor 10
+    #movement for this request: 5
+    #request: 12
+    Total #movement: 45
+Current position: Floor 10
+-------------------------------------------
+-------------------------------------------
+Lift-1 Operation
+Previous position: Floor 10
+Request: Floor 12 to Floor 20
+Detail operations:
+    Go from Floor 10 to Floor 12
+    Go from Floor 12 to Floor 20
+    #movement for this request: 10
+    #request: 13
+    Total #movement: 55
+Current position: Floor 20
+-------------------------------------------
+-------------------------------------------
+Lift-1 Operation
+Previous position: Floor 20
+Request: Floor 6 to Floor 10
+Detail operations:
+    Go from Floor 20 to Floor 6
+    Go from Floor 6 to Floor 10
+    #movement for this request: 18
+    #request: 9
+    Total #movement: 73
+Current position: Floor 10
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 1 to Foor 5
+  Request No: 1
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 7 to Foor 2
+  Request No: 2
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 3 to Foor 8
+  Request No: 3
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 4 to Foor 11
+  Request No: 4
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 12 to Foor 19
+  Request No: 5
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 20 to Foor 7
+  Request No: 6
+-------------------------------------------
+-------------------------------------------
+Lift-1 Operation
+Previous position: Floor 1
+Request: Floor 1 to Floor 5
+Detail operations:
+    Go from Floor 1 to Floor 1
+    Go from Floor 1 to Floor 5
+    #movement for this request: 4
+    #request: 1
+    Total #movement: 4
+Current position: Floor 5
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 15 to Foor 2
+  Request No: 7
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 1 to Foor 5
+  Request No: 8
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 6 to Foor 10
+  Request No: 9
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 9 to Foor 19
+  Request No: 10
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 2 to Foor 5
+  Request No: 11
+-------------------------------------------
+-------------------------------------------
+Lift-3 Operation
+Previous position: Floor 1
+Request: Floor 20 to Floor 7
+Detail operations:
+    Go from Floor 1 to Floor 20
+    Go from Floor 20 to Floor 7
+    #movement for this request: 32
+    #request: 6
+    Total #movement: 43
+Current position: Floor 7
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 6 to Foor 10
+  Request No: 44
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 12 to Foor 20
+  Request No: 45
+-------------------------------------------
+-------------------------------------------
+Lift-2 Operation
+Previous position: Floor 1
+Request: Floor 2 to Floor 5
+Detail operations:
+    Go from Floor 1 to Floor 2
+    Go from Floor 2 to Floor 5
+    #movement for this request: 4
+    #request: 11
+    Total #movement: 4
+Current position: Floor 5
+-------------------------------------------
+-------------------------------------------
+Lift-2 Operation
+Previous position: Floor 5
+Request: Floor 6 to Floor 10
+Detail operations:
+    Go from Floor 5 to Floor 6
+    Go from Floor 6 to Floor 10
+    #movement for this request: 5
+    #request: 44
+    Total #movement: 9
+Current position: Floor 10
+-------------------------------------------
+-------------------------------------------
+Lift-2 Operation
+Previous position: Floor 10
+Request: Floor 12 to Floor 20
+Detail operations:
+    Go from Floor 10 to Floor 12
+    Go from Floor 12 to Floor 20
+    #movement for this request: 10
+    #request: 45
+    Total #movement: 19
+Current position: Floor 20
+-------------------------------------------
+-------------------------------------------
+Lift-2 Operation
+Previous position: Floor 20
+Request: Floor 6 to Floor 10
+Detail operations:
+    Go from Floor 20 to Floor 6
+    Go from Floor 6 to Floor 10
+    #movement for this request: 18
+    #request: 9
+    Total #movement: 37
+Current position: Floor 10
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 1 to Foor 5
+  Request No: 1
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 7 to Foor 2
+  Request No: 2
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 3 to Foor 8
+  Request No: 3
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 4 to Foor 11
+  Request No: 4
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 12 to Foor 19
+  Request No: 5
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 20 to Foor 7
+  Request No: 6
+-------------------------------------------
+-------------------------------------------
+Lift-2 Operation
+Previous position: Floor 1
+Request: Floor 1 to Floor 5
+Detail operations:
+    Go from Floor 1 to Floor 1
+    Go from Floor 1 to Floor 5
+    #movement for this request: 4
+    #request: 1
+    Total #movement: 4
+Current position: Floor 5
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 15 to Foor 2
+  Request No: 7
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 1 to Foor 5
+  Request No: 8
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 6 to Foor 10
+  Request No: 9
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 9 to Foor 19
+  Request No: 10
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 2 to Foor 5
+  Request No: 11
+-------------------------------------------
+-------------------------------------------
+Lift-2 Operation
+Previous position: Floor 5
+Request: Floor 20 to Floor 7
+Detail operations:
+    Go from Floor 5 to Floor 20
+    Go from Floor 20 to Floor 7
+    #movement for this request: 28
+    #request: 6
+    Total #movement: 32
+Current position: Floor 7
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 6 to Foor 10
+  Request No: 12
+-------------------------------------------
+-------------------------------------------
+  New Lift Request From Floor 12 to Foor 20
+  Request No: 13
+-------------------------------------------
+-------------------------------------------
+Lift-3 Operation
+Previous position: Floor 1
+Request: Floor 2 to Floor 5
+Detail operations:
+    Go from Floor 1 to Floor 2
+    Go from Floor 2 to Floor 5
+    #movement for this request: 4
+    #request: 11
+    Total #movement: 17
+Current position: Floor 5
+-------------------------------------------
+-------------------------------------------
+Lift-3 Operation
+Previous position: Floor 5
+Request: Floor 6 to Floor 10
+Detail operations:
+    Go from Floor 5 to Floor 6
+    Go from Floor 6 to Floor 10
+    #movement for this request: 5
+    #request: 12
+    Total #movement: 22
+Current position: Floor 10
+-------------------------------------------
+-------------------------------------------
+Lift-3 Operation
+Previous position: Floor 10
+Request: Floor 12 to Floor 20
+Detail operations:
+    Go from Floor 10 to Floor 12
+    Go from Floor 12 to Floor 20
+    #movement for this request: 10
+    #request: 13
+    Total #movement: 32
+Current position: Floor 20
+-------------------------------------------
+-------------------------------------------
+Lift-3 Operation
+Previous position: Floor 20
+Request: Floor 6 to Floor 10
+Detail operations:
+    Go from Floor 20 to Floor 6
+    Go from Floor 6 to Floor 10
+    #movement for this request: 18
+    #request: 9
+    Total #movement: 50
+Current position: Floor 10
+-------------------------------------------

@@ -1,6 +1,6 @@
 #include "testing.h"
 
-int main(int argc, char *argv[])
+int main(void)
 {
     printf("UNIT TESTING\n"
     "1. FileManager\n"
