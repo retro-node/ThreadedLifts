@@ -1,0 +1,164 @@
+[INFO] Initializing simulation using buffer size 5 elements and lift time of 1 seconds
+[INFO] Successfully created lift R
+[DEBUG] This is Lift R responding
+[INFO] Successfully created lift 1
+[DEBUG] This is lift 1 responding with 1 lift time
+[INFO] Loading instructions: floor 1 --> floor 5
+[INFO] Successfully created lift 2
+[INFO] Loading instructions: floor 7 --> floor 2
+[INFO] Successfully created lift 3
+| 0 : 1 | 1 : EMPTY | 2 : EMPTY | 3 : EMPTY | 4 : EMPTY |
+[INFO] Loading instructions: floor 3 --> floor 8
+| 0 : 1 | 1 : 2 | 2 : EMPTY | 3 : EMPTY | 4 : EMPTY |
+[DEBUG] This is lift 3 responding with 1 lift time
+[INFO] Loading instructions: floor 4 --> floor 11
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : EMPTY | 4 : EMPTY |
+[INFO] Loading instructions: floor 12 --> floor 19
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : EMPTY |
+[INFO] Loading instructions: floor 20 --> floor 7
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : 5 |
+[INFO] Lift 1 going from 1 to 5
+[DEBUG] This is lift 2 responding with 1 lift time
+[INFO] Lift 1 is now at 5
+[INFO] This is lift 1 completing
+[INFO] Loading instructions: floor 15 --> floor 2
+| 0 : 6 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : 5 |
+[INFO] Loading instructions: floor 1 --> floor 5
+| 0 : 6 | 1 : 7 | 2 : 3 | 3 : 4 | 4 : 5 |
+[INFO] Loading instructions: floor 6 --> floor 10
+| 0 : 6 | 1 : 7 | 2 : 8 | 3 : 4 | 4 : 5 |
+[INFO] Loading instructions: floor 9 --> floor 19
+| 0 : 6 | 1 : 7 | 2 : 8 | 3 : 9 | 4 : 5 |
+[INFO] Loading instructions: floor 2 --> floor 5
+| 0 : 6 | 1 : 7 | 2 : 8 | 3 : 9 | 4 : 10 |
+[INFO] Lift 1 going from 20 to 7
+[INFO] Lift 1 is now at 7
+[INFO] This is lift 1 completing
+[WARNING] Tried to process invalid request.
+[INFO] Lift 3 is now at 1
+[INFO] This is lift 3 completing
+[INFO] Loading instructions: floor 6 --> floor 10
+| 0 : 11 | 1 : 7 | 2 : 8 | 3 : 9 | 4 : 10 |
+[INFO] Loading instructions: floor 12 --> floor 20
+| 0 : 11 | 1 : 12 | 2 : 8 | 3 : 9 | 4 : 10 |
+No more lines to load...
+| 0 : 11 | 1 : 12 | 2 : 13 | 3 : 9 | 4 : 10 |
+[INFO] Lift 3 going from 2 to 5
+[DEBUG] Joined Thread R
+[INFO] Lift 3 is now at 5
+[INFO] This is lift 3 completing
+[INFO] Lift 3 going from 6 to 10
+[INFO] Lift 3 is now at 10
+[INFO] This is lift 3 completing
+[INFO] Lift 3 going from 12 to 20
+[INFO] Lift 3 is now at 20
+[INFO] This is lift 3 completing
+[INFO] Lift 3 going from 6 to 10
+[INFO] Lift 3 is now at 10
+[INFO] This is lift 3 completing
+[WARNING] Tried to process invalid request.
+[INFO] Lift 1 is now at 7
+[INFO] This is lift 1 completing
+[WARNING] Tried to process invalid request.
+[INFO] Lift 2 is now at 1
+[INFO] This is lift 2 completing
+[DEBUG] Joined Thread 1
+[DEBUG] Joined Thread 2
+[DEBUG] Joined Thread 3
+--------------------------------------------------------------
+[INFO] Initializing simulation using buffer size 2 elements and lift time of 1 seconds
+[INFO] Successfully created lift R
+[INFO] Successfully created lift 1
+[DEBUG] This is Lift R responding
+[INFO] Successfully created lift 2
+[DEBUG] This is lift 1 responding with 1 lift time
+[DEBUG] This is lift 2 responding with 1 lift time
+[INFO] Loading instructions: floor 1 --> floor 5
+[INFO] Successfully created lift 3
+[INFO] Loading instructions: floor 7 --> floor 2
+| 0 : 1 | 1 : EMPTY |
+[INFO] Loading instructions: floor 3 --> floor 8
+| 0 : 1 | 1 : 2 |
+[INFO] Loading instructions: floor 4 --> floor 11
+| 0 : 3 | 1 : 2 |
+[INFO] Loading instructions: floor 12 --> floor 19
+| 0 : 3 | 1 : 4 |
+[INFO] Loading instructions: floor 20 --> floor 7
+| 0 : 5 | 1 : 4 |
+[INFO] Loading instructions: floor 15 --> floor 2
+| 0 : 5 | 1 : 6 |
+[INFO] Loading instructions: floor 1 --> floor 5
+| 0 : 7 | 1 : 6 |
+[INFO] Loading instructions: floor 6 --> floor 10
+| 0 : 7 | 1 : 8 |
+[INFO] Loading instructions: floor 9 --> floor 19
+| 0 : 9 | 1 : 8 |
+[INFO] Loading instructions: floor 2 --> floor 5
+| 0 : 9 | 1 : 10 |
+[INFO] Loading instructions: floor 6 --> floor 10
+| 0 : 11 | 1 : 10 |
+[INFO] Loading instructions: floor 12 --> floor 20
+| 0 : 11 | 1 : 12 |
+No more lines to load...
+| 0 : 13 | 1 : 12 |
+[INFO] Lift 1 going from 12 to 20
+[DEBUG] This is lift 3 responding with 1 lift time
+[DEBUG] Joined Thread R
+[INFO] Lift 1 is now at 20
+[INFO] This is lift 1 completing
+[INFO] Lift 1 going from 6 to 10
+[INFO] Lift 1 is now at 10
+[INFO] This is lift 1 completing
+[DEBUG] Joined Thread 1
+[WARNING] Tried to process invalid request.
+[INFO] Lift 2 is now at 1
+[INFO] This is lift 2 completing
+[DEBUG] Joined Thread 2
+[DEBUG] Joined Thread 3
+-------------------------------------------------------------------
+[INFO] Initializing simulation using buffer size 12 elements and lift time of 1 seconds
+[INFO] Successfully created lift R
+[INFO] Successfully created lift 1
+[DEBUG] This is Lift R responding
+[INFO] Successfully created lift 2
+[DEBUG] This is lift 2 responding with 1 lift time
+[INFO] Successfully created lift 3
+[INFO] Loading instructions: floor 1 --> floor 5
+[INFO] Loading instructions: floor 7 --> floor 2
+| 0 : 1 | 1 : EMPTY | 2 : EMPTY | 3 : EMPTY | 4 : EMPTY | 5 : EMPTY | 6 : EMPTY | 7 : EMPTY | 8 : EMPTY | 9 : EMPTY | 10 : EMPTY | 11 : EMPTY |
+[INFO] Loading instructions: floor 3 --> floor 8
+| 0 : 1 | 1 : 2 | 2 : EMPTY | 3 : EMPTY | 4 : EMPTY | 5 : EMPTY | 6 : EMPTY | 7 : EMPTY | 8 : EMPTY | 9 : EMPTY | 10 : EMPTY | 11 : EMPTY |
+[INFO] Loading instructions: floor 4 --> floor 11
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : EMPTY | 4 : EMPTY | 5 : EMPTY | 6 : EMPTY | 7 : EMPTY | 8 : EMPTY | 9 : EMPTY | 10 : EMPTY | 11 : EMPTY |
+[INFO] Loading instructions: floor 12 --> floor 19
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : EMPTY | 5 : EMPTY | 6 : EMPTY | 7 : EMPTY | 8 : EMPTY | 9 : EMPTY | 10 : EMPTY | 11 : EMPTY |
+[INFO] Loading instructions: floor 20 --> floor 7
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : 5 | 5 : EMPTY | 6 : EMPTY | 7 : EMPTY | 8 : EMPTY | 9 : EMPTY | 10 : EMPTY | 11 : EMPTY |
+[INFO] Loading instructions: floor 15 --> floor 2
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : 5 | 5 : 6 | 6 : EMPTY | 7 : EMPTY | 8 : EMPTY | 9 : EMPTY | 10 : EMPTY | 11 : EMPTY |
+[INFO] Loading instructions: floor 1 --> floor 5
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : 5 | 5 : 6 | 6 : 7 | 7 : EMPTY | 8 : EMPTY | 9 : EMPTY | 10 : EMPTY | 11 : EMPTY |
+[INFO] Loading instructions: floor 6 --> floor 10
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : 5 | 5 : 6 | 6 : 7 | 7 : 8 | 8 : EMPTY | 9 : EMPTY | 10 : EMPTY | 11 : EMPTY |
+[INFO] Loading instructions: floor 9 --> floor 19
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : 5 | 5 : 6 | 6 : 7 | 7 : 8 | 8 : 9 | 9 : EMPTY | 10 : EMPTY | 11 : EMPTY |
+[INFO] Loading instructions: floor 2 --> floor 5
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : 5 | 5 : 6 | 6 : 7 | 7 : 8 | 8 : 9 | 9 : 10 | 10 : EMPTY | 11 : EMPTY |
+[INFO] Loading instructions: floor 6 --> floor 10
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : 5 | 5 : 6 | 6 : 7 | 7 : 8 | 8 : 9 | 9 : 10 | 10 : 11 | 11 : EMPTY |
+[INFO] Loading instructions: floor 12 --> floor 20
+| 0 : 1 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : 5 | 5 : 6 | 6 : 7 | 7 : 8 | 8 : 9 | 9 : 10 | 10 : 11 | 11 : 12 |
+No more lines to load...
+| 0 : 13 | 1 : 2 | 2 : 3 | 3 : 4 | 4 : 5 | 5 : 6 | 6 : 7 | 7 : 8 | 8 : 9 | 9 : 10 | 10 : 11 | 11 : 12 |
+[DEBUG] Joined Thread R
+[INFO] Lift 2 going from 12 to 20
+[DEBUG] This is lift 1 responding with 1 lift time
+[DEBUG] Joined Thread 1
+[DEBUG] This is lift 3 responding with 1 lift time
+[INFO] Lift 2 is now at 20
+[INFO] This is lift 2 completing
+[INFO] Lift 2 going from 7 to 2
+[INFO] Lift 2 is now at 2
+[INFO] This is lift 2 completing
+[DEBUG] Joined Thread 2
+[DEBUG] Joined Thread 3
