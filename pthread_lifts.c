@@ -110,11 +110,9 @@ void *lift(void* args)
             
             if (new_req != NULL)
             {
-                #ifdef DEBUG
                 pthread_mutex_lock(&fileio_lock);
-                printf("[DEBUG] Lift %d going from %d to %d\n", this_lift_no, new_req->source, new_req->dest);
+                printf("[INFO] Lift %d going from %d to %d\n", this_lift_no, new_req->source, new_req->dest);
                 pthread_mutex_unlock(&fileio_lock);
-                #endif
                 movement-> request = new_req;
                 movement-> num_moves = 0;
                 int destination = movement->request->dest;
@@ -124,13 +122,11 @@ void *lift(void* args)
                 pthread_mutex_unlock(&fileio_lock);
                 lift_origin[this_lift_no-1] = destination;
             }
-            else printf("[ERROR] Tried to process invalid request.\n");
-            #ifdef DEBUG
+            else printf("[WARNING] Tried to process invalid request.\n");
             pthread_mutex_lock(&fileio_lock);
-            printf("[DEBUG] Lift %d is now at %d\n", this_lift_no, lift_origin[this_lift_no-1]);
-            printf("[DEBUG] This is lift %d completing\n", this_lift_no);
+            printf("[INFO] Lift %d is now at %d\n", this_lift_no, lift_origin[this_lift_no-1]);
+            printf("[INFO] This is lift %d completing\n", this_lift_no);
             pthread_mutex_unlock(&fileio_lock);
-            #endif
             pthread_mutex_unlock(&buffer_lock);
         }
     }
