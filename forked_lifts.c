@@ -9,28 +9,21 @@
 #include "forked_lifts.h"
 
 sem_t *fileio_lock;
-sem_t *buffer_lock;
-sem_t *cond;
+sem_t *full;
+sem_t *empty;
+sem_t *mutex;
 
-struct lift_params { // used only to allow multi param sem create
+struct lift_params { 
     int lift_no;
     int lift_time;
 };
 
-// struct child_data{
-//     struct lift_params* params; // lift specific
-//     Req** req_buffer;
-//     sem_t* fileio_lock;
-//     sem_t* buffer_lock;
-//     sem_t* cond;
-//     int running;
-// };
 int *running;
-static int lift_origin[3] = {1,1,1}; 
+static int (*lift_origin)[3];
 Req** req_buffer;
 
-// /* Unused method for reference
-// * Woulda been nice
+// /* Unused method for future reference
+// * Would have been nice.
 // * from https://www.cs.uaf.edu/2012/spring/cs641/lecture/04_05_fork_mmap.html accessed 16/05/2020
 // */
 // void* shared_malloc(int len)
@@ -52,46 +45,40 @@ void *lift_r(void* number)
     printf("[DEBUG] This is Lift R responding\n");
     #endif
     size_t m = *(int*)number;
-    sem_wait(buffer_lock);
+    sem_wait(mutex);
     req_buffer = init(m);
     Req* req = (Req*)request();
     sem_wait(fileio_lock);
     if (req != NULL) write_request(req);    
     sem_post(fileio_lock);
-    sem_post(buffer_lock);
+    sem_post(mutex);
     do
     {
-        if(!isFull(NO_BALANCE)) // release mutex when full
+        sem_wait(empty);
+        sem_wait(mutex);
+        add(req); // queue manipulation requires mutex
+        sem_wait(fileio_lock);
+        req = (Req*)request(); 
+        if (req != NULL) write_request(req);
+        sem_post(fileio_lock);   
+        #ifdef QUEUEV
+        sem_wait(fileio_lock);
+        if (req_buffer[0]) printf("| %d : %d |", 0, req_buffer[0]->req_no);
+        else printf("| 0 : EMPTY |");
+        for(int i = 1; i < (int)m; i++)
         {
-            sem_wait(buffer_lock);
-            while(isFull(BALANCE))
+            if(req_buffer[i])
             {
-                sem_wait(buffer_lock);
+                printf(" %d : %d |", i, req_buffer[i]->req_no);
+            }else{
+                printf(" %d : %s |", i, "EMPTY");
             }
-            // queue manipulation requires mutex
-            add(req);
-            req = (Req*)request();
-            sem_wait(fileio_lock);
-            if (req != NULL) write_request(req);
-            sem_post(fileio_lock);   
-            #ifdef QUEUEV
-            sem_wait(fileio_lock);
-            if (req_buffer[0]) printf("| %d : %d |", 0, req_buffer[0]->req_no);
-            else printf("| 0 : EMPTY |");
-            for(int i = 1; i < (int)m; i++)
-            {
-                if(req_buffer[i])
-                {
-                    printf(" %d : %d |", i, req_buffer[i]->req_no);
-                }else{
-                    printf(" %d : %s |", i, "EMPTY");
-                }
-            }
-            printf("\n");
-            sem_post(fileio_lock);
-            #endif
-            sem_post(buffer_lock);
         }
+        printf("\n");
+        sem_post(fileio_lock);
+        #endif
+        sem_post(mutex);
+        sem_wait(full);
     }while(req != NULL);
     *running = 0;
     return NULL;
@@ -118,39 +105,44 @@ void *lift(void* args)
     #endif
     while(*running)
     {
-        while(!isEmpty(NO_BALANCE)){
-            lift_move* movement = (lift_move*)calloc(1, sizeof(lift_move));
-            movement-> lift_no = this_lift_no;
-            movement-> lift_origin = lift_origin[this_lift_no-1];
-            sem_wait(buffer_lock);
-            Req* new_req = get();
-            sem_post(cond);
-            if (new_req != NULL)
-            {
+        while(!isEmpty()){
+            if(req_buffer != NULL){
+                lift_move* movement = (lift_move*)calloc(1, sizeof(lift_move));
+                movement-> lift_no = this_lift_no;
+                movement-> lift_origin = (*lift_origin)[this_lift_no-1];
+                sem_wait(full);
+                sem_wait(mutex);
+                Req* new_req = get();
+                sem_post(empty);
+                if (new_req != NULL)
+                {
+                    #ifdef DEBUG
+                    sem_wait(fileio_lock);
+                    printf("[DEBUG] Lift %d going from %d to %d\n", this_lift_no, new_req->source, new_req->dest);
+                    sem_post(fileio_lock);
+                    #endif
+                    movement-> request = new_req;
+                    movement-> num_moves = 0;
+                    int destination = movement->request->dest;
+                    sleep(params.lift_time);
+                    sem_wait(fileio_lock);
+                    write_completed(movement); // will free movement and movement->request
+                    sem_post(fileio_lock);
+                    (*lift_origin)[this_lift_no-1] = destination;
+                }
+                else printf("[ERROR] Tried to process invalid request.\n");
                 #ifdef DEBUG
                 sem_wait(fileio_lock);
-                printf("[DEBUG] Lift %d going from %d to %d\n", this_lift_no, new_req->source, new_req->dest);
+                printf("[DEBUG] Lift %d is now at %d\n", this_lift_no, (*lift_origin)[this_lift_no-1]);
                 sem_post(fileio_lock);
                 #endif
-                movement-> request = new_req;
-                movement-> num_moves = 0;
-                int destination = movement->request->dest;
-                sleep(params.lift_time);
-                sem_wait(fileio_lock);
-                write_completed(movement); // will free movement and movement->request
-                sem_post(fileio_lock);
-                lift_origin[this_lift_no-1] = destination;
+                sem_post(mutex);
             }
-            else printf("[ERROR] Tried to process invalid request.\n");
-            #ifdef DEBUG
-            sem_wait(fileio_lock);
-            printf("[DEBUG] Lift %d is now at %d\n", this_lift_no, lift_origin[this_lift_no-1]);
-            printf("[DEBUG] This is lift %d completing\n", this_lift_no);
-            sem_post(fileio_lock);
-            #endif
-            sem_post(buffer_lock);
         }
     }
+    #ifdef DEBUG
+    printf("[DEBUG] This is lift %d completing\n", this_lift_no);
+    #endif
     return NULL;
 }
 int main(int argc, char const *argv[])
@@ -170,15 +162,21 @@ int main(int argc, char const *argv[])
 
             printf("[INFO] Initializing simulation using buffer size %d elements and lift time of %d seconds\n", m, t);
             // initialize shared memory for buffer and semaphores
-            //0x20 for MAP_ANONYMOUS my IDE not registering association
+            // 0x20 for MAP_ANONYMOUS my IDE not registering association
             fileio_lock = (sem_t*)mmap(NULL, sizeof(fileio_lock), PROT_READ | PROT_WRITE, MAP_SHARED | 0x20, -1, 0);
-            buffer_lock = (sem_t*)mmap(NULL, sizeof(buffer_lock), PROT_READ | PROT_WRITE, MAP_SHARED | 0x20, -1, 0);
+            full = (sem_t*)mmap(NULL, sizeof(full), PROT_READ | PROT_WRITE, MAP_SHARED | 0x20, -1, 0);
             req_buffer = (Req**)mmap(NULL, sizeof(req_buffer), PROT_READ | PROT_WRITE, MAP_SHARED | 0x20, -1, 0); 
-            cond = (sem_t*)mmap(NULL, sizeof(cond), PROT_READ | PROT_WRITE, MAP_SHARED | 0x20, -1, 0);
+            empty = (sem_t*)mmap(NULL, sizeof(empty), PROT_READ | PROT_WRITE, MAP_SHARED | 0x20, -1, 0);
+            mutex = (sem_t*)mmap(NULL, sizeof(mutex), PROT_READ | PROT_WRITE, MAP_SHARED | 0x20, -1, 0);
             running = (int*)mmap(NULL, sizeof(running), PROT_READ | PROT_WRITE, MAP_SHARED | 0x20, -1, 0);
+            lift_origin = (int(*)[3])mmap(NULL, sizeof(lift_origin), PROT_READ | PROT_WRITE, MAP_SHARED | 0x20, -1, 0);
+            for (int i =0 ; i < 3; i++)
+            {    
+                (*lift_origin)[i] = 1;
+            }
             *running = 1;
-            // init_mem_fork();
-            if(sem_init(buffer_lock, 1, 1) == -1 && sem_init(fileio_lock, 1, 1) == -1 && sem_init(cond, 1, 1) == -1)
+            init_mem_fork();
+            if(sem_init(full, 1, 1) == -1 && sem_init(fileio_lock, 1, 1) == -1 && sem_init(empty, 1, 1) == -1)
             {
                 printf("[ERROR] Initialization failed.\n");
             } 
@@ -196,11 +194,12 @@ int main(int argc, char const *argv[])
                     printf("[INFO] Successfully created Lift R\n");
                     for(int i = 1; i < NUM_THREADS; i++) // i from 1 to 3 to create lift 1,2 & 3
                     {
-                        struct lift_params* params = (struct lift_params*)calloc(1, sizeof(struct lift_params));
+                        struct lift_params* params = (struct lift_params*)mmap(NULL, sizeof(struct lift_params), PROT_READ | PROT_WRITE, MAP_SHARED | 0x20, -1, 0);
                         params->lift_no=i;
                         params->lift_time=t;
                         ptid = fork();
-                        if (ptid == 0) //child
+
+                        if (ptid == 0) // Child lift
                         {
                             lift((void*)params); 
                             exit(SUCC_EXIT_STAT);
@@ -210,17 +209,23 @@ int main(int argc, char const *argv[])
                     }
                     // wait for all children to finish (no more children tasks to wait for)
                     printf("[INFO] Waiting for lifts to complete.");
-                    do{
-                        ptidf = wait(&pstat);
-                    }
-                    while(ptidf > 0); //until error core as a result of no children
+                    while((ptidf = wait(&pstat)) > 0); //until error core as a result of no children
                     // cleanup for parent only
                     free(req_buffer);
                     sem_destroy(fileio_lock);
-                    sem_destroy(buffer_lock);
+                    sem_destroy(full);
+                    sem_destroy(empty);
+                    sem_destroy(mutex);
                 }
             }
-            // munmap(ptr, len)
+            munmap(fileio_lock, sizeof(req_buffer));
+            munmap(full, sizeof(full));
+            munmap(empty, sizeof(empty));
+            munmap(req_buffer, sizeof(req_buffer));
+            munmap(mutex, sizeof(mutex));
+            munmap(running, sizeof(running));
+            munmap(lift_origin, sizeof(lift_origin));
+
         }
         else
         {

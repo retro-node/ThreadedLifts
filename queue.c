@@ -4,7 +4,7 @@ int buf_size;
 static int front;
 static int back;
 struct Req** buffer = NULL;
-
+int nItems;
 // Initialise a buffer of requests to a certain size s
 Req** init(int s)
 {
@@ -14,6 +14,7 @@ Req** init(int s)
         buffer = (Req**)calloc(buf_size, sizeof(Req*));
         front = 0;
         back = 0;
+        nItems = 0;
     }
     else
     {
@@ -29,21 +30,25 @@ Req** init(int s)
 */
 void add(Req* new_req)
 {
-    if(!isFull(BALANCE) && new_req != NULL)
+    if(buffer)
     {
-        buffer[back] = new_req;
-        back++;
-    }
-    #ifdef DEBUG
-    else if (new_req == NULL) 
-    {
-        printf("[ERROR] Null request cannot be added.\n");
-    }
-    else
-    {
-        printf("[ERROR] Buffer is full, cannot add.\n");
-    }
-    #endif
+        if(!isFull() && new_req != NULL)
+        {
+            buffer[back%buf_size] = new_req;
+            back++;
+            nItems++;
+        }
+        #ifdef DEBUG
+        else if (new_req == NULL) 
+        {
+            printf("[ERROR] Null request cannot be added.\n");
+        }
+        else
+        {
+            printf("[ERROR] Buffer is full, cannot add.\n");
+        }
+        #endif
+    } else printf("[ERROR] Buffer doesn't, cannot add.\n");
 }
 
 /* get
@@ -53,42 +58,45 @@ void add(Req* new_req)
 Req* get(void)
 {
     Req* out = NULL;
-    if (!isEmpty(BALANCE))
+    if (buffer && !isEmpty())
     {
-        out = buffer[front];
-        buffer[front] = NULL;
+        out = buffer[front%buf_size];
+        buffer[front%buf_size] = NULL;
         // one item consideration
-        if( front != back ) front++; // dissallow front to falsely preceed back
+        front++;
+        nItems--;
     }
     return out;
 }
 
-int isFull(int balance)
+int isFull()
 {
-    if (balance)
-    {
-        if (front >= buf_size) front = (front % (buf_size-1)) ; //avoid func overhead for use in while loop
-        if (back >= buf_size) back = (back % (buf_size));
-    }
     int res = 0;
-    if (front != 0)
-    {
-        res = (back % front) == back && buffer[back] != NULL;
+    if(buffer){
+        res = nItems == buf_size-1;
+        // if (front != 0)
+        // {
+        //     res = (back % front) == back && buffer[back%buf_size] != NULL;
+        // }
+        // else // avoid div by 0
+        // {
+        //     res = back == buf_size && buffer[back%buf_size] != NULL; // wrap around consideration
+        // }
     }
-    else // avoid div by 0
-    {
-        res = back == buf_size && buffer[back] != NULL; // wrap around consideration
-    }
-    
     return res; //will always result as 1 for full queue
 }
 
-int isEmpty(int balance)
+int isEmpty()
 {
-    if (balance)
-    {
-        if (front >= buf_size) front = (front % (buf_size-1)) ; //avoid func overhead for use in while loop
-        if (back >= buf_size) back = (back % (buf_size));
+    int out = 0;
+    if(buffer){
+        out = nItems == 0;
+        // out = front == back && buffer[front%buf_size] == NULL;
     }
-    return front == back && buffer[front] == NULL;
+    return out;
+}
+
+void destroy()
+{
+    free(buffer);
 }

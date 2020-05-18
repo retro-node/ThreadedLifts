@@ -1,12 +1,14 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include "pthread_lifts.h"
-#define NO_BALANCE 0
-#define BALANCE 1
+// #define  0
+// #define  1
 struct Req** init(int);
 void add(struct Req*);
 struct Req* get(void);
-int isFull(int);
-int isEmpty(int);
+int isFull(void); //here
+int isEmpty(void); //here
+int exists(void);
+void destroy(void);
 
 #endif

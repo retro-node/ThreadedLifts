@@ -113,10 +113,9 @@ int write_request(void* req)
  *****************/
 int write_completed(void* mv)
 { 
-    lift_move * move = (lift_move*)calloc(1, sizeof(lift_move));
-    *move = *(lift_move*)mv;
-    free(mv);
-    
+    // lift_move * move = (lift_move*)calloc(1, sizeof(lift_move));
+    lift_move * move = (lift_move*)mv;
+
     int lift_no = move->lift_no;
     int source = move->request->source;
     int dest = move->request->dest;
@@ -169,8 +168,6 @@ int write_completed(void* mv)
     }
     
     fclose(fp);
-    free(move->request);
-    free(move);
  
     return total_move_no[lift_no];
 }
