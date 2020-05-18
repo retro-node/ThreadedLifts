@@ -124,10 +124,10 @@ void *lift(void* args)
 
             }
             printf("[INFO] Lift %d is now at %d\n", this_lift_no, lift_origin[this_lift_no-1]);
-            printf("[INFO] This is lift %d completing\n", this_lift_no);
             free(movement);
         }
     }
+    printf("[INFO] This is lift %d completing\n", this_lift_no);
     free(params);
     return NULL;
 }

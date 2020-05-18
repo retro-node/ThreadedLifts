@@ -8,7 +8,7 @@
 
 #include "FileManager.h"
 static int total_move_no[3];
-static int reqNo;
+
 static int lineNo = 0;
 /******************
 * request
@@ -80,7 +80,7 @@ void* request(void)
 int write_request(void* req)
 { 
     Req** request = (Req**)&req;
-    
+    static int reqNo;
     FILE* fp = fopen(FILE_OUT, "ab");
     reqNo++;
     (**request).req_no = reqNo;
