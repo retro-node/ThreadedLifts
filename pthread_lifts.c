@@ -123,7 +123,6 @@ void *lift(void* args)
                 pthread_mutex_unlock(&buffer_lock);
 
             }
-            else printf("[WARNING] Tried to process invalid request.\n");
             printf("[INFO] Lift %d is now at %d\n", this_lift_no, lift_origin[this_lift_no-1]);
             printf("[INFO] This is lift %d completing\n", this_lift_no);
             free(movement);
